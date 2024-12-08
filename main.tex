@@ -16,15 +16,47 @@
     \tableofcontents
 \end{frame}
 
-\section{Mathematical Physics}
-\subsection{Generalization of Heat Equation}
+\section{Generalization of Heat Equation}
 \begin{frame}
     \frametitle{Generalization of Heat Equation}
+    \begin{block}{Problem}
+        \begin{itemize}
+            \item Consider following generalization of the heat equation
+            \begin{equation}
+                \frac{\partial u}{\partial t} = \nabla \cdot (C(x,t) \nabla u)
+            \end{equation}
+            where $C(x,t)$ is symmetric, its eigenvalues are all contained in $[a,b], a > 0$ for any $x,t$, and each $C_{ij}$ are measurable.
+            \item Existence and uniqueness of solution?
+            \item Regularity of solution?
+        \end{itemize}
+    \end{block}
+\end{frame}
+\begin{frame}
+    \frametitle{Generalization of Heat Equation}
+    \begin{block}{Solution}
+        \begin{itemize}
+            \item Solved by John F. Nash in \href{https://www.karlin.mff.cuni.cz/~kaplicky/pages/pages/2011z/Nash1958.pdf}{1958}.
+            \item He assumed stronger condition on $C(x,t)$, and proved existence and uniqueness of global solution ($t > 0$).
+            \item For the regularity he obtained h{\"o}lder continuity of solution, where the exponent depends only on eigenvalue bounds $a,b$ and dimension $n$.
+            \item Lastly he extended the result to when $C(x,t)$ is measurable through taking limit.
+            \item Interestingly, while it was him who came with outline of overall proof, most of critical inequalities such as entropy inequalities, were obtained by his collegues without knowing the whole picture.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
-\subsection{Percolation Theory}
+\section{Applications in Economics: Frequent Batch Auctions}
 \begin{frame}
-    \frametitle{Percolation Theory}
+    \frametitle{Applications in Economics: Frequent Batch Auctions}
+    \begin{block}{High-frequency Trading Arms Race}
+        % TODO: Add more details
+    \end{block}
+\end{frame}
+
+\section{Applications in Economics: Loss Versus Rebalancing}
+\begin{frame}
+    \frametitle{Applications in Economics: Loss Versus Rebalancing}
+    \begin{block}{Loss Versus Rebalancing (LVR)}
+    \end{block}
 \end{frame}
 
 \end{document}
