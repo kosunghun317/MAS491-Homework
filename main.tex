@@ -1,7 +1,8 @@
 \documentclass{beamer}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
 \usetheme{Boadilla}
 
-\title{Interesting Problems from Various Fields}
+\title{Mathematics in Economics: \\ Market Microstructure Theory}
 \subtitle{MAS491 Final Presentation}
 \author{Ko Sunghun}
 \institute{KAIST}
@@ -13,50 +14,193 @@
 \end{frame}
 \begin{frame}
     \frametitle{Table of Contents}
+    In this homework presentation, we have done a case study of application of mathematics in market microstructure thoery, which leverages game thoery and probability theory to provide insights on complex economic phenomena.
     \tableofcontents
 \end{frame}
 
-\section{Generalization of Heat Equation}
-\begin{frame}
-    \frametitle{Generalization of Heat Equation}
-    \begin{block}{Problem}
-        \begin{itemize}
-            \item Consider following generalization of the heat equation
-            \begin{equation}
-                \frac{\partial u}{\partial t} = \nabla \cdot (C(x,t) \nabla u)
-            \end{equation}
-            where $C(x,t)$ is symmetric, its eigenvalues are all contained in $[a,b], a > 0$ for any $x,t$, and each $C_{ij}$ are measurable.
-            \item Existence and uniqueness of solution?
-            \item Regularity of solution?
-        \end{itemize}
-    \end{block}
-\end{frame}
-\begin{frame}
-    \frametitle{Generalization of Heat Equation}
-    \begin{block}{Solution}
-        \begin{itemize}
-            \item Solved by John F. Nash in \href{https://www.karlin.mff.cuni.cz/~kaplicky/pages/pages/2011z/Nash1958.pdf}{1958}.
-            \item He assumed stronger condition on $C(x,t)$, and proved existence and uniqueness of global solution ($t > 0$).
-            \item For the regularity he obtained h{\"o}lder continuity of solution, where the exponent depends only on eigenvalue bounds $a,b$ and dimension $n$.
-            \item Lastly he extended the result to when $C(x,t)$ is measurable through taking limit.
-            \item Interestingly, while it was him who came with outline of overall proof, most of critical inequalities such as entropy inequalities, were obtained by his collegues without knowing the whole picture.
-        \end{itemize}
-    \end{block}
-\end{frame}
+% \section{Generalization of Heat Equation}
+% \begin{frame}
+%     \frametitle{Generalization of Heat Equation}
+%     \begin{block}{Problem}
+%         \begin{itemize}
+%             \item Consider following generalization of the heat equation
+%             \begin{equation}
+%                 \frac{\partial u}{\partial t} = \nabla \cdot (C(x,t) \nabla u)
+%             \end{equation}
+%             where $C(x,t)$ is symmetric, its eigenvalues are all contained in $[a,b], a > 0$ for any $x,t$, and each $C_{ij}$ are measurable.
+%             \item Existence and uniqueness of solution?
+%             \item Regularity of solution?
+%         \end{itemize}
+%     \end{block}
+% \end{frame}
+% \begin{frame}
+%     \frametitle{Generalization of Heat Equation}
+%     \begin{block}{Solution}
+%         \begin{itemize}
+%             \item Solved by John F. Nash in \href{https://www.karlin.mff.cuni.cz/~kaplicky/pages/pages/2011z/Nash1958.pdf}{1958}.
+%             \item He assumed stronger condition on $C(x,t)$, and proved existence and uniqueness of global solution ($t > 0$).
+%             \item For the regularity he obtained h{\"o}lder continuity of solution, where the exponent depends only on eigenvalue bounds $a,b$ and dimension $n$.
+%             \item Lastly he extended the result to when $C(x,t)$ is measurable through taking limit.
+%             \item Interestingly, while it was him who came with outline of overall proof, most of critical inequalities such as entropy inequalities, were obtained by his collegues without knowing the whole picture.
+%         \end{itemize}
+%     \end{block}
+% \end{frame}
 
-\section{Applications in Economics: Frequent Batch Auctions}
+
+\section{Motivation}
+
 \begin{frame}
-    \frametitle{Applications in Economics: Frequent Batch Auctions}
+    \frametitle{Motivation}
     \begin{block}{High-frequency Trading Arms Race}
-        % TODO: Add more details
+        It is well known that HFT firms compete against each other for faster execution. In the study of \href{https://academic.oup.com/qje/article/130/4/1547/1916146}{Budish, Cramton, and Shim (2015)}, they studied equilibrium on exchange between these HFT firms under various order priority rules, suggesting alternative market design that potentially reduces spread while effectively terminating endless arms race for speed.
     \end{block}
 \end{frame}
 
-\section{Applications in Economics: Loss Versus Rebalancing}
+\section{Continuous Market Model without Latency}
+
 \begin{frame}
-    \frametitle{Applications in Economics: Loss Versus Rebalancing}
-    \begin{block}{Loss Versus Rebalancing (LVR)}
+    \frametitle{Continuous Market Model without Latency} 
+    \begin{block}{Evolution of Price}
+        Our goal is to show how endless competition for latency arbitrage is "built-in" in continuous first-come-first-serve (FCFS) orderbook model. To do so, assume following very simple model:
+        \begin{itemize}
+            \item There is a security X that is traded in continuous market.
+            \item The price of X is perfectly correlated to publicly observable signal y.
+            \item E.g. X being SPY (S\&P 500 ETF), y being S\&P 500 index.
+            \item y follows stochastic process, which is, compound Poisson jump process with arrival rate $\lambda$ and jump distribution $F$. Here we additionally assume $F$ is symmetric and zero-mean.
+            \item Define $J \coloneq |F|$, the jump size distribution. 
+        \end{itemize}
     \end{block}
 \end{frame}
+
+\begin{frame}
+    \frametitle{Continuous Market Model without Latency} 
+    \begin{block}{Players}
+        There are following players in the market: HFT firms and Investors. We first introduce the HFT firms' characteristics.
+        \begin{itemize}
+            \item They have no intrinsic demand on security X. They just want to provide liquidity to market and earn from spread or snipe the stale quote. To do so, they can either provide liquidity by submitting limit orders, expecting investors to cross the spread, or take stale quotes from other HFT firms.
+            \item For simplicity, they are risk neutral. Their goal is to buy X whenever it is underpriced (i.e. $y > p_t$) and sell X whenever it is overpriced (i.e. $y < p_t$). Here, $p_t$ is price at trading time $t$. Then objective becomes to maximize the expected profit per unit time.
+            \item We first start with the case where the number of HFT firms, $N$, is given exogenously. Later, after introducing latency and speed cost $c_\text{speed}$, we will consider the case where $N$ is endogenously determined.
+        \end{itemize} 
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Continuous Market Model without Latency} 
+    \begin{block}{Players}
+        Next we introduce the Investors.
+        \begin{itemize}
+            \item Investors represents the rest of the market who are insensitive to small fluctuations in execution price and time. They are assumed to arrive market and submit a unit amount of market orders, with arrival rate $\lambda_\text{investor}$. By half probability they submit buy order, and vice versa.
+        \end{itemize} 
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Continuous Market Model without Latency} 
+    \begin{block}{Players}
+        We fix player 1 to be monopolistic liquidity provider (LP). We begin with simpler case where there is no latency. That is, whenever quote from HFT firm is stale, other firms will try to snipe it while the owner of stale quote will try to cancel it. Our goal is to find nash equilibrium in this setting and how spread $s$ is determined. For this setting to be equilibrium, the expected profit from being LP and sniper should be same. Each player's strategy is as follows:
+        \begin{itemize}
+            \item LP: Maintain a bid and ask spread centered around $y$, with spread $s$, expecting investors to cross the spread. If the quote becomes stale from jump of $y$, try to cancel it.
+            \item Sniper: Submit market order whenever quote becomes stale.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Continuous Market Model without Latency}
+    \begin{block}{Equilibrium in No-latency setting}
+        Return from being LP is: 
+        \begin{align}
+            \lambda_\text{investor} \cdot \frac{s}{2} - \lambda \cdot \mathbb{P}(J > \frac{s}{2}) \cdot \mathbb{E}(J - \frac{s}{2} | J > \frac{s}{2}) \cdot \frac{N-1}{N}
+        \end{align}
+        Meanwhile, return from being Sniper is: 
+        \begin{align}
+            \lambda \cdot \mathbb{P}(J > \frac{s}{2}) \cdot \mathbb{E}(J - \frac{s}{2} | J > \frac{s}{2}) \cdot \frac{1}{N}
+        \end{align}
+        Here, $\frac{N-1}{N}$ comes from the fact that there are $N-1$ other HFT firms that can snipe the stale quote (orders that arrived at same time are executed in random order). Equating these two, we can find the spread $s$ that maximizes the expected profit of LP. That is, $s$ should satisfy: \begin{align}
+            \lambda_\text{investor} \cdot \frac{s}{2} = \lambda \cdot \mathbb{P}(J > \frac{s}{2}) \cdot \mathbb{E}(J - \frac{s}{2} | J > \frac{s}{2})
+        \end{align}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Continuous Market Model without Latency}
+    \begin{block}{Interpretation of Equilibrium}
+    Equation (3) contains implies important insight -- the spread times arrival rate of investors, which is, cost of investors per time, is equal to the sum of expected return of sniping and the cost of being liquidity provider. This implies that competition among HFT firms manifests as costs borne by investors. In other words, HFT firms are effectively passing on the costs of competition to the rest of the market participants, including retail investors. In the next model, which incorporates latency, this becomes even more apparent.
+    \end{block}
+\end{frame}
+
+\section{Continuous Market Model with Latency}
+
+\begin{frame}
+    \frametitle{Continuous Market Model With latency} 
+    \begin{block}{Players}
+        While the setting on investors remains same, this time we introduce latency in observing $y$ and cost $c_\text{speed}$ to reduce such latency. Without paying additional cost $c_\text{speed}$, HFT firms can only observe $y$ with delay $\delta_\text{slow}$. With $c_\text{speed}$, they can reduce this delay to $\delta_\text{fast}$. Define $\delta \coloneq \delta_\text{slow} - \delta_\text{fast}$.
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Continuous Market Model With latency}
+    \begin{block}{Equilibrium in the presence of Latency}
+        It is clear that HFT firm who didn't pay $c_\text{speed}$ for additional speed (i.e., lower latency) can never win competition and will be obsolete, resulting in not participating game. In this setting, the expected profit of LP is: 
+        \begin{align}
+            \lambda_\text{investor} \cdot \frac{s}{2} - \lambda \cdot \mathbb{P}(J > \frac{s}{2}) \cdot \mathbb{E}(J - \frac{s}{2} | J > \frac{s}{2}) \cdot \frac{N-1}{N} - c_\text{speed} \geq 0
+        \end{align}
+        Meanwhile, the expected profit of Sniper is: 
+        \begin{align}
+            \lambda \cdot \mathbb{P}(J > \frac{s}{2}) \cdot \mathbb{E}(J - \frac{s}{2} | J > \frac{s}{2}) \cdot \frac{1}{N} - c_\text{speed} \geq 0
+        \end{align}
+        where $s$ is spread and $N$ is the number of HFT firms who paid $c_\text{speed}$ to participate in the game.
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Continuous Market Model With latency}
+    \begin{block}{Interpretation}
+        Equating these two with profitability condition, one may find $s^*$ and $N^*$ that satisfy: \begin{align}
+            \lambda_\text{investor} \cdot \frac{s^*}{2} &= \lambda \cdot \mathbb{P}(J > \frac{s^*}{2}) \cdot \mathbb{E}(J - \frac{s^*}{2} | J > \frac{s^*}{2}) \\
+            \lambda_\text{investor} \cdot \frac{s^*}{2} &= N^* \cdot c_\text{speed}
+        \end{align}
+        Again, from (7), it becomes clear that the cost of competition in HFT firms is effectively passed on to investors in the form of spread.
+    \end{block}
+\end{frame}
+
+\section{Frequent Batch Auctions as alternative}
+
+\begin{frame}
+    \frametitle{Frequent Batch Auctions as alternative}
+    \begin{block}{Frequent Batch Auctions}
+        The authors of referenced paper suggest alternative market design called frequent batch auctions. In this market design, orders are batched for a short period of time, and then executed in uniform price. Throughout the following slides, we will see how this market design can potentially reduce spread and effectively eliminate the need for endless competition for speed. Informally, their idea is that by setting batch interval long enough, they enables liquidity providers to cancel their stale quotes whenever huge enough jump occurs, unless it happens at the very end of batch. This will reduce the cost of being LP and in conclusion, reduce the spread.
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Frequent Batch Auctions as alternative}
+    \begin{block}{Equilibrium in Batch Auctions}
+        Note that in this setting, limit orders are not filled in FCFS but rather in pro-rata manner. That is, each limit order at same price level will be filled in proportion to their size. In setting such that batch interval $\tau$ is long enough than $\delta$, benefit from lower latency is negligible and no firm pay for additional speed. Moreover, since there is effectively no risk of being sniped, now HFT firms compete against each other to "provide" liquidity at zero bid-ask spread, not sniping it. Now let $Q^*$ be the size of limit order from LP(s). For this condition to be hold, as forementioned, paying $c_\text{speed}$ should not be profitable. That is, profit from additional speed should be less than or equal to $c_\text{speed}$. Formalizing this, we have: \begin{align}
+            \lambda \cdot \frac{\delta}{\tau} \cdot \mathbb{E}(J) \cdot Q^* \leq c_\text{speed}.
+        \end{align}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Frequent Batch Auctions as alternative}
+    \begin{block}{Interpretation}
+        Thus for any given setting on price movement, latency gap and cost for reducing latency, by setting tau long enough, one can create market with zero spread and depth of $Q^*$. This is in stark contrast to the continuous market model, where spread is determined by the cost of competition among HFT firms and always strictly positive. Authors concluded with suggesting, from real-world statistics, setting interval around 100 milliseconds to 1 second will be enough to achieve this.
+    \end{block}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}
+    \frametitle{Conclusion}
+    \begin{block}{Conclusion}
+        In this presentation, we have seen how market microstructure theory, which leverages game theory and probability theory, can provide insights on complex economic phenomena. In particular, we reviewed the paper of Budish, Cramton, and Shim on how it is important to design market structure correctly, by showing contrasting results between continuous and batch execution of orders. Like this example, mathematics can be a powerful tool in understanding and designing economic systems.
+    \end{block}
+\end{frame}
+% \section{Loss Versus Rebalancing}
+% \begin{frame}
+%     \frametitle{Loss Versus Rebalancing}
+%     \begin{block}{Loss Versus Rebalancing (LVR)}
+%     \end{block}
+% \end{frame}
 
 \end{document}
